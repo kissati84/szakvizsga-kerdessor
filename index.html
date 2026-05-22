@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Közigazgatási szakvizsga – Írásbeli gyakorló kérdéssorok</title>
+<style>
+  :root {
+    --bg: #f5f3ef; --card: #ffffff; --primary: #1f3a5f; --primary-dark: #142845;
+    --accent: #b48a3c; --muted: #6b6b6b; --border: #d9d4c7; --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: #1d1d1d; margin: 0; padding: 0; line-height: 1.55; min-height: 100vh; }
+  header { background: var(--primary); color: #fff; padding: 40px 32px 36px; box-shadow: var(--shadow); text-align: center; }
+  header h1 { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: 0.2px; }
+  header .subtitle { margin-top: 10px; font-size: 15px; opacity: 0.85; }
+  main { max-width: 820px; margin: 40px auto 80px; padding: 0 24px; }
+  .lead { background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 20px 24px; margin-bottom: 30px; font-size: 15px; color: #2a2a2a; }
+  .lead strong { color: var(--primary); }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } header { padding: 30px 18px; } main { padding: 0 16px; } }
+  .modcard { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 26px 24px; text-decoration: none; color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+  .modcard:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.10); border-color: var(--accent); }
+  .modtag { display: inline-block; background: var(--accent); color: #fff; font-size: 12px; font-weight: 700;
+    padding: 3px 11px; border-radius: 12px; align-self: flex-start; letter-spacing: 0.3px; }
+  .modtitle { margin: 14px 0 6px; font-size: 19px; font-weight: 600; color: var(--primary); }
+  .moddesc { font-size: 13.5px; color: var(--muted); flex-grow: 1; }
+  .modmeta { margin-top: 16px; font-size: 13px; color: #444; }
+  .modbtn { margin-top: 16px; background: var(--primary); color: #fff; text-align: center;
+    padding: 10px; border-radius: 6px; font-size: 14px; font-weight: 600; transition: background 0.15s; }
+  .modcard:hover .modbtn { background: var(--primary-dark); }
+  .footer { text-align: center; margin-top: 36px; font-size: 12.5px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Közigazgatási szakvizsga</h1>
+  <div class="subtitle">Írásbeli esszé kérdéssorok · gyakorló és önellenőrző felület (2026)</div>
+</header>
+
+<main>
+  <div class="lead">
+    <strong>Válasszon modult.</strong> Mindkét kérdéssorban a kérdés alá írhatja a válaszát, majd az <em>„Ellenőrzés"</em> gombbal a hivatalos tananyag kulcsszavai alapján azonnali, tájékoztató jellegű értékelést és pontszámot kap, valamint megtekintheti a tananyag-alapú mintaválaszt. A válaszokat a böngésző a saját gépén tárolja.
+  </div>
+
+  <div class="cards">
+    <a class="modcard" href="kerdessor_I_modul_2026.html">
+      <span class="modtag">I. MODUL</span>
+      <div class="modtitle">A központi állami szervek rendszere</div>
+      <div class="moddesc">Alkotmányfejlődés, alapvető jogok, Országgyűlés, köztársasági elnök, Kormány, Alkotmánybíróság, bíróság, ügyészség, helyi önkormányzatok és a közigazgatás szervezete.</div>
+      <div class="modmeta">60 kérdés · 15 / 10 / 5 pontos csoportok</div>
+      <div class="modbtn">Megnyitás →</div>
+    </a>
+
+    <a class="modcard" href="kerdessor_II_modul_2026.html">
+      <span class="modtag">II. MODUL</span>
+      <div class="modtitle">Jogalkotási és jogalkalmazási ismeretek</div>
+      <div class="moddesc">Jogforrási rendszer, jogalkotási eljárás, jogszabályszerkesztés, valamint a közigazgatási hatósági eljárás (Ákr.): alapelvek, eljárás, döntések, jogorvoslatok, végrehajtás.</div>
+      <div class="modmeta">74 kérdés · 15 / 10 / 5 pontos csoportok</div>
+      <div class="modbtn">Megnyitás →</div>
+    </a>
+  </div>
+
+  <div class="footer">A kérdéssorok a 2026. március 10-i hivatalos vizsgakérdések és a Nemzeti Közszolgálati Egyetem tananyaga alapján készültek. Az értékelés kulcsszó-egyezésen alapul, ezért tájékoztató jellegű.</div>
+</main>
+
+</body>
+</html>
