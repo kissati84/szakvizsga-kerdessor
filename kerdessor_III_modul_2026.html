@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Közigazgatási szakvizsga – III. modul írásbeli kérdéssor (2026)</title>
+<style>
+  :root {
+    --bg: #f5f3ef; --card: #ffffff; --primary: #1f3a5f; --primary-dark: #142845;
+    --accent: #b48a3c; --muted: #6b6b6b; --border: #d9d4c7;
+    --green: #2e7d32; --green-bg: #eaf5ea; --amber: #b9770e; --amber-bg: #fdf3e3;
+    --red: #b00020; --red-bg: #fbeaec; --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: #1d1d1d; margin: 0; padding: 0; line-height: 1.55; }
+  header { background: var(--primary); color: #fff; padding: 26px 32px; box-shadow: var(--shadow); }
+  header h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.2px; }
+  header .subtitle { margin-top: 6px; font-size: 14px; opacity: 0.85; }
+  main { max-width: 980px; margin: 28px auto 120px; padding: 0 24px; }
+  .intro { background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 18px 22px; margin-bottom: 24px; font-size: 14.5px; color: #2a2a2a; }
+  .intro strong { color: var(--primary); }
+  .intro .note { display:block; margin-top:8px; font-size:13px; color:var(--muted); }
+  .toolbar { position: sticky; top: 0; z-index: 100; background: rgba(245,243,239,0.96);
+    backdrop-filter: blur(8px); padding: 12px 0; margin-bottom: 18px; display: flex; gap: 10px;
+    flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--border); }
+  .toolbar button { background: var(--primary); color: #fff; border: none; padding: 9px 16px;
+    border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: 500; transition: background 0.15s; }
+  .toolbar button:hover { background: var(--primary-dark); }
+  .toolbar button.secondary { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+  .toolbar button.secondary:hover { background: #eef2f7; }
+  .toolbar button.danger { background: #fff; color: var(--red); border: 1px solid var(--red); }
+  .toolbar button.danger:hover { background: #fdecec; }
+  .summary { margin-left: auto; font-size: 13px; color: var(--muted); align-self: center; text-align:right; }
+  .summary b { color: var(--primary); font-size: 14px; }
+  .section { margin: 36px 0 8px; padding: 12px 18px; background: var(--primary); color: #fff;
+    border-radius: 8px 8px 0 0; font-size: 16px; font-weight: 600; display: flex;
+    justify-content: space-between; align-items: center; }
+  .section .badge { background: var(--accent); color: #fff; padding: 3px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 600; }
+  .qcard { background: var(--card); border: 1px solid var(--border); border-top: none; padding: 18px 22px; }
+  .qcard + .qcard { border-top: 1px solid var(--border); }
+  .qcard:last-child { border-radius: 0 0 8px 8px; }
+  .qhead { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+  .qnum { background: var(--accent); color: #fff; border-radius: 4px; padding: 2px 9px; font-size: 13px;
+    font-weight: 700; min-width: 44px; text-align: center; flex-shrink: 0; margin-top: 2px; }
+  .qtext { font-size: 15px; font-weight: 500; color: #1d1d1d; }
+  textarea { width: 100%; min-height: 90px; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: 6px; font-family: inherit; font-size: 14px; line-height: 1.5; resize: vertical;
+    background: #fafafa; transition: border-color 0.15s, background 0.15s; }
+  textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
+  textarea.filled { background: #f4f9f1; border-color: #a8c89b; }
+  .qactions { margin-top: 10px; display: flex; align-items: center; gap: 14px; }
+  .check-btn { background: var(--accent); color: #fff; border: none; padding: 8px 18px; border-radius: 6px;
+    font-size: 13.5px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+  .check-btn:hover { background: #9c7430; }
+  .qpoints { font-size: 14px; font-weight: 600; }
+  .result { margin-top: 14px; display: none; }
+  .result.show { display: block; }
+  .scorebar { display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:7px; margin-bottom:12px; }
+  .scorebar.s-good { background: var(--green-bg); border:1px solid #b6dab2; }
+  .scorebar.s-mid  { background: var(--amber-bg); border:1px solid #eccf95; }
+  .scorebar.s-low  { background: var(--red-bg); border:1px solid #edbac1; }
+  .score-num { font-size: 22px; font-weight: 700; }
+  .s-good .score-num { color: var(--green); }
+  .s-mid .score-num { color: var(--amber); }
+  .s-low .score-num { color: var(--red); }
+  .score-label { font-size: 13.5px; color:#333; }
+  .kwblock { margin: 10px 0; }
+  .kwtitle { font-size: 12.5px; font-weight: 600; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.4px; margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 12.5px; padding: 3px 10px; border-radius: 12px; }
+  .chip.found { background: var(--green-bg); color: var(--green); border: 1px solid #b6dab2; }
+  .chip.missing { background: #f0eee9; color: #8a8073; border: 1px solid #ddd6c8; }
+  .detail { margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 12px; }
+  .detail summary { cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--primary); }
+  .detail .body { margin-top: 8px; font-size: 13.5px; color: #2a2a2a; background:#faf8f3;
+    border:1px solid var(--border); border-radius:6px; padding: 12px 14px; }
+  .ref { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .save-indicator { position: fixed; bottom: 24px; right: 24px; background: var(--primary); color: #fff;
+    padding: 10px 16px; border-radius: 6px; font-size: 13px; box-shadow: var(--shadow); opacity: 0;
+    transition: opacity 0.3s; pointer-events: none; }
+  .save-indicator.visible { opacity: 1; }
+  @media (max-width: 640px) { header { padding: 20px 18px; } main { padding: 0 14px; } .qcard { padding: 14px 16px; } .summary{margin-left:0;} }
+  @media print { .toolbar, .save-indicator, .check-btn { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Közigazgatási szakvizsga – III. modul</h1>
+  <div class="subtitle">Általános államháztartási ismeretek · Írásbeli esszé kérdéssor (2026. március 10.)</div>
+</header>
+
+<main>
+
+  <div class="intro">
+    <strong>Útmutató:</strong> Töltse ki a kérdések alatti mezőket, majd kattintson az adott kérdésnél az <em>„Ellenőrzés"</em> gombra. A program a hivatalos tananyag kulcsszavai alapján értékeli a választ: pontszámot ad, megmutatja a megtalált és a hiányzó kulcsfogalmakat, és felfedi a tananyag-alapú mintaválaszt. Válaszait a böngésző automatikusan menti a saját gépén, így bezárás után is folytathatja.
+    <span class="note">⚠️ Az értékelés kulcsszó-egyezésen alapul, ezért tájékoztató jellegű: a tényleges vizsgán a tartalmi pontosság és a kifejtés is számít. A „hiányzó" kulcsszó nem feltétlenül hiba (lehet, hogy más megfogalmazást használt) – inkább emlékeztető, mit érdemes még említeni.</span>
+  </div>
+
+  <div class="toolbar">
+    <button onclick="checkAll()">✓ Összes ellenőrzése</button>
+    <button class="secondary" onclick="downloadTxt()">💾 Válaszok mentése .txt-be</button>
+    <button class="danger" onclick="if(confirm('Biztosan törli az összes választ és értékelést?')) clearAll();">🗑️ Összes törlése</button>
+    <span class="summary" id="summary">0 / 41 kitöltve</span>
+  </div>
+
+  <div class="section" id="sec-15">15 pontos kérdések <span class="badge">9 kérdés</span></div>
+  <div class="qcard" data-card="15/1">
+    <div class="qhead"><div class="qnum">15/1</div><div class="qtext">Mutassa be a Költségvetési Tanács jogállását és főbb feladatköreit, a Költségvetési Tanács költségvetési törvényjavaslatot érintő feladatait, az eljárás főbb mozzanatait!</div></div>
+    <textarea data-q="15/1" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/1')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/1"></span>
+    </div>
+    <div class="result" data-result="15/1"></div>
+  </div>
+  <div class="qcard" data-card="15/2">
+    <div class="qhead"><div class="qnum">15/2</div><div class="qtext">Mutassa be a nemzeti vagyon rendeltetését és a nemzeti vagyon körébe tartozó vagyonelemeket, továbbá – azok jellemzőinek bemutatásával – ismertesse a nemzeti vagyon kategóriáit!</div></div>
+    <textarea data-q="15/2" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/2')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/2"></span>
+    </div>
+    <div class="result" data-result="15/2"></div>
+  </div>
+  <div class="qcard" data-card="15/3">
+    <div class="qhead"><div class="qnum">15/3</div><div class="qtext">Határozza meg a nemzetgazdaság fogalmát, mutassa be az állam nemzetgazdaságban betöltött szerepét és ismertesse az államháztartás fogalmát, valamint a felépítésére vonatkozó fontosabb szabályokat!</div></div>
+    <textarea data-q="15/3" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/3')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/3"></span>
+    </div>
+    <div class="result" data-result="15/3"></div>
+  </div>
+  <div class="qcard" data-card="15/4">
+    <div class="qhead"><div class="qnum">15/4</div><div class="qtext">Fejtse ki melyek az elkülönített állami pénzalapok működésének főbb jellemzői! Mutassa be a működő elkülönített pénzalapokat!</div></div>
+    <textarea data-q="15/4" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/4')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/4"></span>
+    </div>
+    <div class="result" data-result="15/4"></div>
+  </div>
+  <div class="qcard" data-card="15/5">
+    <div class="qhead"><div class="qnum">15/5</div><div class="qtext">Ismertesse az Állami Számvevőszék jogállását, a függetlenségére vonatkozó garanciális szabályokat, mutassa be az Állami Számvevőszék főbb feladatait és azok végzésének főbb szabályait!</div></div>
+    <textarea data-q="15/5" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/5')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/5"></span>
+    </div>
+    <div class="result" data-result="15/5"></div>
+  </div>
+  <div class="qcard" data-card="15/6">
+    <div class="qhead"><div class="qnum">15/6</div><div class="qtext">Mutassa be a gazdálkodásra vonatkozó legfontosabb államháztartási gazdálkodási alapelveket!</div></div>
+    <textarea data-q="15/6" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/6')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/6"></span>
+    </div>
+    <div class="result" data-result="15/6"></div>
+  </div>
+  <div class="qcard" data-card="15/7">
+    <div class="qhead"><div class="qnum">15/7</div><div class="qtext">Vázolja fel a költségvetési szervek irányítására, felügyeletére vonatkozó főbb szabályokat!</div></div>
+    <textarea data-q="15/7" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/7')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/7"></span>
+    </div>
+    <div class="result" data-result="15/7"></div>
+  </div>
+  <div class="qcard" data-card="15/8">
+    <div class="qhead"><div class="qnum">15/8</div><div class="qtext">Mutassa be a helyi önkormányzatok bevételeit!</div></div>
+    <textarea data-q="15/8" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/8')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/8"></span>
+    </div>
+    <div class="result" data-result="15/8"></div>
+  </div>
+  <div class="qcard" data-card="15/9">
+    <div class="qhead"><div class="qnum">15/9</div><div class="qtext">Csoportosítsa az államháztartási kiadásokat funkcióik szerint! Határozza meg a csoport elemek rövid tartalmát!</div></div>
+    <textarea data-q="15/9" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('15/9')">Ellenőrzés</button>
+      <span class="qpoints" data-points="15/9"></span>
+    </div>
+    <div class="result" data-result="15/9"></div>
+  </div>
+  <div class="section" id="sec-10">10 pontos kérdések <span class="badge">18 kérdés</span></div>
+  <div class="qcard" data-card="10/1">
+    <div class="qhead"><div class="qnum">10/1</div><div class="qtext">Ismertesse az Alaptörvény nemzeti vagyon fogalmára, céljára és a vagyongazdálkodás alapelveire vonatkozó legfontosabb szabályait!</div></div>
+    <textarea data-q="10/1" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/1')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/1"></span>
+    </div>
+    <div class="result" data-result="10/1"></div>
+  </div>
+  <div class="qcard" data-card="10/2">
+    <div class="qhead"><div class="qnum">10/2</div><div class="qtext">Sorolja fel a központi költségvetési ciklus fázisait és azok időbeli ütemezését, valamint mutassa be az egyes szakaszok lényegét!</div></div>
+    <textarea data-q="10/2" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/2')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/2"></span>
+    </div>
+    <div class="result" data-result="10/2"></div>
+  </div>
+  <div class="qcard" data-card="10/3">
+    <div class="qhead"><div class="qnum">10/3</div><div class="qtext">Határozza meg a fizetési mérleg nemzetgazdasági jelentőségét, részeit és egyenleg pozícióit (hiány, többlet) jelentőségét, finanszírozását!</div></div>
+    <textarea data-q="10/3" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/3')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/3"></span>
+    </div>
+    <div class="result" data-result="10/3"></div>
+  </div>
+  <div class="qcard" data-card="10/4">
+    <div class="qhead"><div class="qnum">10/4</div><div class="qtext">Határozza meg a jövedelemcentralizáció és az újraelosztás tartalmát, jelentőségét!</div></div>
+    <textarea data-q="10/4" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/4')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/4"></span>
+    </div>
+    <div class="result" data-result="10/4"></div>
+  </div>
+  <div class="qcard" data-card="10/5">
+    <div class="qhead"><div class="qnum">10/5</div><div class="qtext">Csoportosítsa a közhatalmi bevételeket! Röviden utaljon a tartalmukra és írjon mindegyikre példát!</div></div>
+    <textarea data-q="10/5" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/5')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/5"></span>
+    </div>
+    <div class="result" data-result="10/5"></div>
+  </div>
+  <div class="qcard" data-card="10/6">
+    <div class="qhead"><div class="qnum">10/6</div><div class="qtext">Mutassa be a nemzeti vagyon rendeltetését, sorolja fel a nemzeti vagyongazdálkodás feladatait!</div></div>
+    <textarea data-q="10/6" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/6')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/6"></span>
+    </div>
+    <div class="result" data-result="10/6"></div>
+  </div>
+  <div class="qcard" data-card="10/7">
+    <div class="qhead"><div class="qnum">10/7</div><div class="qtext">Mutassa be, hogy melyek a központi költségvetés főbb kiadásai!</div></div>
+    <textarea data-q="10/7" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/7')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/7"></span>
+    </div>
+    <div class="result" data-result="10/7"></div>
+  </div>
+  <div class="qcard" data-card="10/8">
+    <div class="qhead"><div class="qnum">10/8</div><div class="qtext">Mutassa be a központi költségvetési tartalékokat!</div></div>
+    <textarea data-q="10/8" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/8')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/8"></span>
+    </div>
+    <div class="result" data-result="10/8"></div>
+  </div>
+  <div class="qcard" data-card="10/9">
+    <div class="qhead"><div class="qnum">10/9</div><div class="qtext">Mutassa be a stabilitási törvénynek az önkormányzati adósságot keletkeztető ügylet engedélyezésére vonatkozó szabályait!</div></div>
+    <textarea data-q="10/9" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/9')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/9"></span>
+    </div>
+    <div class="result" data-result="10/9"></div>
+  </div>
+  <div class="qcard" data-card="10/10">
+    <div class="qhead"><div class="qnum">10/10</div><div class="qtext">Határozza meg a vállalkozási tevékenység fogalmát és ismertesse, hogy milyen szabályok szerint végezhet vállalkozási tevékenységet a költségvetési szerv!</div></div>
+    <textarea data-q="10/10" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/10')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/10"></span>
+    </div>
+    <div class="result" data-result="10/10"></div>
+  </div>
+  <div class="qcard" data-card="10/11">
+    <div class="qhead"><div class="qnum">10/11</div><div class="qtext">Ismertesse az államháztartási kontrollok rendszerét, főbb követelményeit!</div></div>
+    <textarea data-q="10/11" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/11')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/11"></span>
+    </div>
+    <div class="result" data-result="10/11"></div>
+  </div>
+  <div class="qcard" data-card="10/12">
+    <div class="qhead"><div class="qnum">10/12</div><div class="qtext">Mutassa be a kormányzati szintű ellenőrzés rendszerét és abból ismertesse a Kormányzati Ellenőrzési Hivatal ellenőrzési jogkörének terjedelmét!</div></div>
+    <textarea data-q="10/12" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/12')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/12"></span>
+    </div>
+    <div class="result" data-result="10/12"></div>
+  </div>
+  <div class="qcard" data-card="10/13">
+    <div class="qhead"><div class="qnum">10/13</div><div class="qtext">Ismertesse a belső kontrollrendszer célját, valamint a belső ellenőrzés fogalmát és az annak függetlenségére, kialakítására, működtetésére vonatkozó szabályokat!</div></div>
+    <textarea data-q="10/13" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/13')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/13"></span>
+    </div>
+    <div class="result" data-result="10/13"></div>
+  </div>
+  <div class="qcard" data-card="10/14">
+    <div class="qhead"><div class="qnum">10/14</div><div class="qtext">Ismertesse a költségvetési szerv alapításának feltételeire, alapítására, nyilvántartására vonatkozó fontosabb szabályokat!</div></div>
+    <textarea data-q="10/14" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/14')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/14"></span>
+    </div>
+    <div class="result" data-result="10/14"></div>
+  </div>
+  <div class="qcard" data-card="10/15">
+    <div class="qhead"><div class="qnum">10/15</div><div class="qtext">Határozza meg az infláció és a defláció fogalmát, kezelésük eszközrendszerét, veszélyeit!</div></div>
+    <textarea data-q="10/15" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/15')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/15"></span>
+    </div>
+    <div class="result" data-result="10/15"></div>
+  </div>
+  <div class="qcard" data-card="10/16">
+    <div class="qhead"><div class="qnum">10/16</div><div class="qtext">Határozza meg az államháztartási gazdálkodási alapelvek érvényesítésének jogi garanciáit!</div></div>
+    <textarea data-q="10/16" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/16')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/16"></span>
+    </div>
+    <div class="result" data-result="10/16"></div>
+  </div>
+  <div class="qcard" data-card="10/17">
+    <div class="qhead"><div class="qnum">10/17</div><div class="qtext">Határozza meg az elkülönített állami pénzalap fogalmát, az alap létrehozásának törvényi feltételeit!</div></div>
+    <textarea data-q="10/17" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/17')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/17"></span>
+    </div>
+    <div class="result" data-result="10/17"></div>
+  </div>
+  <div class="qcard" data-card="10/18">
+    <div class="qhead"><div class="qnum">10/18</div><div class="qtext">Ismertesse az önkormányzatok belső ellenőrzésére vonatkozó főbb szabályokat!</div></div>
+    <textarea data-q="10/18" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('10/18')">Ellenőrzés</button>
+      <span class="qpoints" data-points="10/18"></span>
+    </div>
+    <div class="result" data-result="10/18"></div>
+  </div>
+  <div class="section" id="sec-5">5 pontos kérdések <span class="badge">14 kérdés</span></div>
+  <div class="qcard" data-card="5/1">
+    <div class="qhead"><div class="qnum">5/1</div><div class="qtext">Definiálja a közszféra fogalmát és mutassa be a közjavak közszférán belüli szerepét!</div></div>
+    <textarea data-q="5/1" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/1')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/1"></span>
+    </div>
+    <div class="result" data-result="5/1"></div>
+  </div>
+  <div class="qcard" data-card="5/2">
+    <div class="qhead"><div class="qnum">5/2</div><div class="qtext">Határozza meg a közfeladat fogalmát!</div></div>
+    <textarea data-q="5/2" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/2')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/2"></span>
+    </div>
+    <div class="result" data-result="5/2"></div>
+  </div>
+  <div class="qcard" data-card="5/3">
+    <div class="qhead"><div class="qnum">5/3</div><div class="qtext">Határozza meg a költségvetési szerv fogalmát!</div></div>
+    <textarea data-q="5/3" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/3')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/3"></span>
+    </div>
+    <div class="result" data-result="5/3"></div>
+  </div>
+  <div class="qcard" data-card="5/4">
+    <div class="qhead"><div class="qnum">5/4</div><div class="qtext">Fejtse ki, hogy az Alaptörvény – a gazdálkodási önállóságához kapcsolódóan – milyen jogokat biztosít az önkormányzatok számára a helyi közügyek intézése körében!</div></div>
+    <textarea data-q="5/4" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/4')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/4"></span>
+    </div>
+    <div class="result" data-result="5/4"></div>
+  </div>
+  <div class="qcard" data-card="5/5">
+    <div class="qhead"><div class="qnum">5/5</div><div class="qtext">Határozza meg a gazdasági növekedés fogalmát, mutatóját, illetve a mutató elmozdulásának államháztartásra gyakorolt hatását!</div></div>
+    <textarea data-q="5/5" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/5')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/5"></span>
+    </div>
+    <div class="result" data-result="5/5"></div>
+  </div>
+  <div class="qcard" data-card="5/6">
+    <div class="qhead"><div class="qnum">5/6</div><div class="qtext">Határozza meg és értelmezze az államháztartási hiány fogalmát és a deficitfinanszírozás módját!</div></div>
+    <textarea data-q="5/6" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/6')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/6"></span>
+    </div>
+    <div class="result" data-result="5/6"></div>
+  </div>
+  <div class="qcard" data-card="5/7">
+    <div class="qhead"><div class="qnum">5/7</div><div class="qtext">Definiálja a felhasználási kötöttség alapelvét!</div></div>
+    <textarea data-q="5/7" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/7')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/7"></span>
+    </div>
+    <div class="result" data-result="5/7"></div>
+  </div>
+  <div class="qcard" data-card="5/8">
+    <div class="qhead"><div class="qnum">5/8</div><div class="qtext">Fejtse ki, hogy mit jelent a közbeszerzési kötelezettség elve!</div></div>
+    <textarea data-q="5/8" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/8')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/8"></span>
+    </div>
+    <div class="result" data-result="5/8"></div>
+  </div>
+  <div class="qcard" data-card="5/9">
+    <div class="qhead"><div class="qnum">5/9</div><div class="qtext">Határozza meg a forgalomképtelen nemzeti vagyon definícióját!</div></div>
+    <textarea data-q="5/9" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/9')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/9"></span>
+    </div>
+    <div class="result" data-result="5/9"></div>
+  </div>
+  <div class="qcard" data-card="5/10">
+    <div class="qhead"><div class="qnum">5/10</div><div class="qtext">Sorolja fel a helyi önkormányzat saját bevételeinek körét!</div></div>
+    <textarea data-q="5/10" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/10')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/10"></span>
+    </div>
+    <div class="result" data-result="5/10"></div>
+  </div>
+  <div class="qcard" data-card="5/11">
+    <div class="qhead"><div class="qnum">5/11</div><div class="qtext">Ismertesse az önkormányzatok vállalkozási szabadságára és annak korlátaira vonatkozó rendelkezéseket!</div></div>
+    <textarea data-q="5/11" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/11')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/11"></span>
+    </div>
+    <div class="result" data-result="5/11"></div>
+  </div>
+  <div class="qcard" data-card="5/12">
+    <div class="qhead"><div class="qnum">5/12</div><div class="qtext">Ismertesse a teljesítésigazolás lényegét a kötelezettségvállalás folyamatában!</div></div>
+    <textarea data-q="5/12" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/12')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/12"></span>
+    </div>
+    <div class="result" data-result="5/12"></div>
+  </div>
+  <div class="qcard" data-card="5/13">
+    <div class="qhead"><div class="qnum">5/13</div><div class="qtext">Ismertesse a költségvetési szervek nyilvántartásával kapcsolatos rendelkezéseket!</div></div>
+    <textarea data-q="5/13" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/13')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/13"></span>
+    </div>
+    <div class="result" data-result="5/13"></div>
+  </div>
+  <div class="qcard" data-card="5/14">
+    <div class="qhead"><div class="qnum">5/14</div><div class="qtext">Mutassa be a Magyar Államkincstár kormányzati szintű ellenőrzési rendszerben betöltött szerepét!</div></div>
+    <textarea data-q="5/14" placeholder="Ide írja a válaszát..."></textarea>
+    <div class="qactions">
+      <button class="check-btn" onclick="checkAnswer('5/14')">Ellenőrzés</button>
+      <span class="qpoints" data-points="5/14"></span>
+    </div>
+    <div class="result" data-result="5/14"></div>
+  </div>
+
+</main>
+
+<div class="save-indicator" id="saveIndicator">Mentve</div>
+
+<script>
+const KEYWORDS = {"15/1": {"kulcsszavak": ["költségvetési tanács", "országgyűlés törvényhozó tevékenységét támogató szerv", "elnök", "magyar nemzeti bank elnöke", "állami számvevőszék elnöke", "köztársasági elnök", "hat évre", "előzetes hozzájárulás", "vétójog", "véleményt nyilvánít", "kétszer foglal állást", "zárószavazás", "megalapozottság", "függetlenek egymástól"], "tananyag_hivatkozas": "2.4 fejezet (1292-1341. sor)", "mintavalasz": "A Költségvetési Tanács az Országgyűlés törvényhozó tevékenységét támogató szerv, amely a központi költségvetésről szóló törvény megalapozottságát vizsgálja. Tagja a Költségvetési Tanács elnöke (akit a köztársasági elnök nevez ki hat évre), a Magyar Nemzeti Bank elnöke és az Állami Számvevőszék elnöke; tagjai függetlenek egymástól. Feladatai közé tartozik, hogy véleményt nyilvánít a költségvetési törvény tervezetéről, dönt az Alaptörvényben előírt előzetes hozzájárulásról, és félévente véleményt ad a végrehajtásról és az államadósságról. A költségvetés elfogadásához a Tanács előzetes hozzájárulása szükséges, és kétszer foglal állást a tervezetről: a benyújtáskor és a zárószavazás előtt. A Tanácsnak vétójoga van: egyet nem értése esetén a Kormány a tervezetet ismételten köteles megtárgyalni."}, "15/2": {"kulcsszavak": ["nemzeti vagyon", "állam és helyi önkormányzatok tulajdona", "közérdek szolgálata", "közös szükségletek kielégítése", "természeti erőforrások", "jövő nemzedékek", "forgalomképtelen", "kizárólagos tulajdon", "nemzetgazdasági szempontból kiemelt jelentőségű vagyon", "korlátozottan forgalomképes", "forgalomképes", "koncesszió", "elidegeníthető"], "tananyag_hivatkozas": "2.5.1 fejezet (1345-1401. sor)", "mintavalasz": "A nemzeti vagyon az állam és a helyi önkormányzatok tulajdona; kezelésének és védelmének célja a közérdek szolgálata, a közös szükségletek kielégítése, a természeti erőforrások megóvása és a jövő nemzedékek szükségleteinek figyelembevétele. Vagyonelemei a tulajdonban álló dolgok, pénzügyi eszközök, társasági részesedések és vagyoni értékű jogok. A nemzeti vagyon három kategóriába sorolható: a forgalomképtelen vagyon (a kizárólagos tulajdonban álló vagyon és a nemzetgazdasági szempontból kiemelt jelentőségű vagyon) nem idegeníthető el. A korlátozottan forgalomképes vagyon csak törvényben vagy önkormányzati rendeletben meghatározott feltételek szerint hasznosítható. A forgalomképes vagyon elidegeníthető és a piaci forgalom része lehet."}, "15/3": {"kulcsszavak": ["nemzetgazdaság", "gazdasági szereplők összessége", "állam mint különleges gazdasági szereplő", "közfeladat", "állami beavatkozás", "intervenció", "államháztartás", "közfeladatot ellátó és finanszírozó gazdálkodás", "alrendszer", "központi alrendszer", "önkormányzati alrendszer", "államháztartási törvény", "duális rendszer"], "tananyag_hivatkozas": "1.1 fejezet (141-264. sor)", "mintavalasz": "A nemzetgazdaság egy adott ország gazdasági szereplőinek összessége és a köztük lévő kölcsönhatások rendszere. Az állam különleges gazdasági szereplő, mert elsődleges célja nem a jövedelemszerzés, hanem közfeladatainak hatékony ellátása, és közhatalma birtokában állami beavatkozással (intervencióval) képes befolyásolni a gazdaság működését. Az államháztartás az állam és a helyi önkormányzatok közfeladatot ellátó és finanszírozó gazdálkodásának rendszere. Az államháztartási törvény alapegységei az alrendszerek, a magyar államháztartás jelenleg két alrendszerre tagolódik: a központi és az önkormányzati alrendszerre, összhangban a közigazgatás duális rendszerével."}, "15/4": {"kulcsszavak": ["elkülönített állami pénzalap", "központi alrendszer", "törvény hozhat létre", "közfeladat", "államháztartáson kívüli forrás", "alapszerű elszámolás", "alappal rendelkező miniszter", "vállalkozási tevékenység nem folytatható", "nemzeti foglalkoztatási alap", "bethlen gábor alap", "központi nukleáris pénzügyi alap", "nemzeti kulturális alap", "nemzeti kutatási technológiai és innovációs alap"], "tananyag_hivatkozas": "3.3 fejezet (2136-2191. sor)", "mintavalasz": "Az elkülönített állami pénzalapok az államháztartás központi alrendszerén belül működnek, és adott közfeladat részben államháztartáson kívüli forrásból történő ellátására szolgálnak; alapszerű elszámolásra valók. Alapot csak törvény hozhat létre, gazdálkodásáról az alappal rendelkező miniszter (testület) éves beszámolót és mérleget készít, amelynek ellenőrzését az Állami Számvevőszék végzi. Az alapból vállalkozási tevékenység nem folytatható, hitel nem vehető fel, garancia és kezesség nem vállalható. A jelenleg működő alapok: Nemzeti Foglalkoztatási Alap, Bethlen Gábor Alap, Központi Nukleáris Pénzügyi Alap, Nemzeti Kulturális Alap, valamint a Nemzeti Kutatási, Technológiai és Innovációs Alap."}, "15/5": {"kulcsszavak": ["állami számvevőszék", "ász", "országgyűlés általános hatáskörű pénzügyi és gazdasági ellenőrző szerve", "független", "kizárólag az országgyűlésnek alárendelve", "szervezeti függetlenség", "jogi függetlenség", "személyi függetlenség", "pénzügyi függetlenség", "közpénzek", "nemzeti vagyon", "törvényességi célszerűségi eredményességi", "ellenőrzési terv", "elnök"], "tananyag_hivatkozas": "6.2 fejezet (3021-3092. sor)", "mintavalasz": "Az Állami Számvevőszék az Országgyűlés általános hatáskörű pénzügyi és gazdasági ellenőrző szerve, amely független a Kormánytól, kizárólag az Országgyűlésnek alárendelve látja el feladatát, és egyedül annak tartozik beszámolási kötelezettséggel. Függetlensége négy szinten biztosított: szervezeti, jogi (megállapításai más szerv előtt nem támadhatók meg), személyi (összeférhetetlenségi szabályok) és pénzügyi (önálló költségvetési fejezet). Feladata a közpénzek és a nemzeti vagyon kezelésének, felhasználásának ellenőrzése, ellenőrzéseit törvényességi, célszerűségi és eredményességi szempontok szerint végzi. Tevékenységét az elnök által jóváhagyott ellenőrzési terv alapján folytatja; egyes szervek (pártok, egyházak) gazdálkodását kizárólag törvényességi szempontból ellenőrzi."}, "15/6": {"kulcsszavak": ["gazdálkodási alapelvek", "nyilvánosság elve", "átláthatóság", "költségvetés alapján történő gazdálkodás elve", "programozás elve", "felhasználási kötöttség elve", "közbeszerzési kötelezettség elve", "állami támogatások korlátozásának elve", "közpénzek", "társadalmi ellenőrizhetőség", "költségvetési év", "számadási kötelezettség"], "tananyag_hivatkozas": "2.2.2 fejezet (873-925. sor)", "mintavalasz": "A gazdálkodásra vonatkozó legfontosabb államháztartási alapelvek a következők. A nyilvánosság elve a közpénzekkel való gazdálkodás társadalmi ellenőrizhetőségét biztosítja: minden közpénzekkel gazdálkodó szervezet köteles a nyilvánosság előtt elszámolni. A költségvetés alapján történő gazdálkodás elve szerint a gazdálkodást költségvetés alapján kell folytatni (a költségvetési év a naptári évvel egyezik). A programozás elve a hosszú távú, éves költségvetésen túli kötelezettségvállalások biztosítását teszi lehetővé. A felhasználási kötöttség elve a támogatások célhoz kötöttségét és a számadási kötelezettséget jelenti, a közbeszerzési kötelezettség elve az értékhatár feletti kiadásokat közbeszerzéshez köti, az állami támogatások korlátozásának elve pedig a versenyt torzító állami támogatásokat tiltja."}, "15/7": {"kulcsszavak": ["irányítás", "felügyelet", "irányító szerv", "alapítói jogok", "kinevezés és felmentés", "gazdasági vezető", "törvényességi szakszerűségi hatékonysági ellenőrzés", "döntés megsemmisítése", "egyedi utasítás", "jelentéstétel", "irányítási jogok teljessége", "felügyeleti jogkör", "korlátozott irányítási jogkör", "viszonylagos önállóság"], "tananyag_hivatkozas": "5.3 fejezet (2668-2743. sor)", "mintavalasz": "A költségvetési szervnek mindig van legalább egy irányító vagy felügyeleti szerve. Az irányítási jogok közé tartoznak az alapítói jogok (alapítás, átalakítás, megszüntetés, SZMSZ jóváhagyása), a vezető és a gazdasági vezető kinevezése és felmentése, a tevékenység törvényességi, szakszerűségi és hatékonysági ellenőrzése, a döntések megsemmisítése vagy előzetes/utólagos jóváhagyása, egyedi utasítás kiadása, valamint jelentéstételre kötelezés. A költségvetési szervek felett általában az irányítási jogok teljessége érvényesül, így csak viszonylagos önállósággal rendelkeznek. A felügyeleti jogkör korlátozott irányítási jogkört jelent: nem foglalja magában az alapítói jogokat, a döntések jóváhagyását és az egyedi utasítás kiadását, és ott érvényesül, ahol nagyobb az intézményi önállóság."}, "15/8": {"kulcsszavak": ["helyi önkormányzat bevételei", "saját bevételek", "központi támogatások", "átengedett megosztott bevételek", "helyi adók", "települési adó", "vagyonhasznosítás", "illeték bírság díj", "feladatfinanszírozás", "felhasználási kötöttség", "termőföld bérbeadás szja", "környezetvédelmi bírság", "közigazgatási bírság"], "tananyag_hivatkozas": "4.2.1 fejezet (2334-2448. sor)", "mintavalasz": "A helyi önkormányzatok bevételei három csoportba sorolhatók: saját bevételek, központi támogatások, valamint átengedett, megosztott bevételek. A saját bevételek közé tartoznak a helyi adók (és a települési adó), a saját tevékenységből, vállalkozásból és vagyonhasznosításból származó bevétel, nyereség, osztalék, kamat és bérleti díj, az átvett pénzeszközök, valamint a törvény alapján megillető illeték, bírság és díj. A központi támogatások a feladatok finanszírozására szolgálnak, az ellátandó feladatok figyelembevételével, felhasználási kötöttséggel vagy anélkül. Az átengedett, megosztott bevételek körét a központi költségvetésről szóló törvény állapítja meg (például a termőföld bérbeadásából származó szja 100%-a, egyes környezetvédelmi és közlekedési bírságok meghatározott hányada)."}, "15/9": {"kulcsszavak": ["államháztartási kiadások", "funkcionális osztályozás", "feladatellátás szerint", "állami működési funkciók", "tradicionális hagyományos funkciók", "jóléti funkciók", "gazdasági funkciók", "államadósság kezeléséhez kapcsolódó funkciók", "honvédelmi", "igazságszolgáltatás", "szociális egészségügyi oktatás", "adósságszolgálat", "tőketörlesztés kamatfizetés"], "tananyag_hivatkozas": "2.3.2 fejezet (1115-1241. sor)", "mintavalasz": "Az államháztartási kiadások funkcionális (feladatellátás szerinti) osztályozásban négy funkciócsoport valamelyikéhez kapcsolódnak. Az állami működési (tradicionális, hagyományos) funkciók közé a jogalkotási és igazgatási, a külügyi, a honvédelmi, a rend- és jogvédelmi, valamint az igazságszolgáltatási feladatok tartoznak; e funkciókör egyidős az állam kialakulásával. A jóléti funkciók az állami gondoskodó szerephez kötődnek (szociális és egészségügyi ellátás, nyugdíj- és egészségbiztosítás, munkanélküliség kezelése, oktatás, gyermekvédelem); ez a legmagasabb kiadáskör, az összes kiadás több mint 60%-a. A gazdasági funkciók a kormányzat által szervezett vagy támogatott gazdasági tevékenységekhez (infrastruktúra, vállalkozástámogatás) kapcsolódnak. Az államadósság kezeléséhez kapcsolódó funkciók a tőketörlesztést és kamatfizetést (együtt adósságszolgálatot) jelentik."}, "10/1": {"kulcsszavak": ["alaptörvény", "nemzeti vagyon", "állam és helyi önkormányzatok tulajdona", "közérdek szolgálata", "közös szükségletek kielégítése", "természeti erőforrások megóvása", "jövő nemzedékek", "törvényben meghatározott célból átruházható", "értékarányosság", "átláthatóság", "törvényesség célszerűség eredményesség", "fokozott védelem"], "tananyag_hivatkozas": "2.5.1 és 2.5.4 fejezet (1362-1370, 1728-1737. sor)", "mintavalasz": "Az Alaptörvény fokozott védelmet biztosít a közpénzeknek és a nemzeti vagyonnak. Megfogalmazása szerint az állam és a helyi önkormányzatok tulajdona nemzeti vagyon, amelynek kezelési és védelmi célja a közérdek szolgálata, a közös szükségletek kielégítése, a természeti erőforrások megóvása és a jövő nemzedékek szükségleteinek figyelembevétele. A vagyongazdálkodás alapelvei: nemzeti vagyont csak törvényben meghatározott célból, kivételekkel és az értékarányosság követelménye mellett lehet átruházni; átruházásra vagy hasznosításra szerződés csak átlátható szervezettel köthető; az állami és önkormányzati gazdálkodó szervezetek a törvényesség, célszerűség és eredményesség követelményei szerint önállóan és felelősen gazdálkodnak."}, "10/2": {"kulcsszavak": ["költségvetési ciklus", "négy fázis", "döntés-előkészítő szakasz", "döntési szakasz", "döntésvégrehajtási szakasz", "ellenőrzési szakasz", "költségvetési évet megelőző év", "költségvetési év", "költségvetési évet követő év", "fejezetet irányító szerv", "államháztartásért felelős miniszter", "zárszámadás", "állami számvevőszék"], "tananyag_hivatkozas": "3.1.2 fejezet (1951-2032. sor)", "mintavalasz": "A költségvetési ciklus négy fázisra tagolódik. A döntés-előkészítő szakasz a költségvetési évet megelőző évben zajlik: az államháztartásért felelős miniszter ütemterve alapján a fejezetet irányító szervek elkészítik tervüket, és összeáll a törvényjavaslat, amelyet a Kormány a Költségvetési Tanácsnak és az ÁSZ-nek átad, majd benyújt az Országgyűlésnek. A döntési szakasz szintén a megelőző évben zajlik: az Országgyűlés megtárgyalja és megalkotja a költségvetésről szóló törvényt. A döntésvégrehajtási szakasz időtartama egybeesik a költségvetési évvel, a végrehajtásért a Kormány felel. A döntésvégrehajtás ellenőrzésének szakasza a költségvetési évet követő évre esik: a Kormány zárszámadást készít, amelyet az ÁSZ ellenőriz, majd az Országgyűlés törvényt alkot róla."}, "10/3": {"kulcsszavak": ["fizetési mérleg", "külgazdasági egyensúly", "nemzetgazdaság külfölddel lebonyolított pénzügyi műveletei", "folyó fizetési mérleg", "tőke- és pénzügyi mérleg", "jegybanki tartalék", "hiány", "többlet", "adósságot generáló tételek", "működőtőke", "hitelfelvétel", "állampapírok", "eladósodás", "nyitott gazdaság"], "tananyag_hivatkozas": "1.3.1.3 fejezet (488-544. sor)", "mintavalasz": "A külgazdasági egyensúly pénzügyi helyzetét a fizetési mérleg mutatja, amely a nemzetgazdaság külfölddel lebonyolított pénzügyi műveleteinek mérlegszerű kimutatása; nyitott gazdaságban különösen nagy a jelentősége. A fizetési mérleg a folyó fizetési mérlegből és a tőke- és pénzügyi mérlegből áll, harmadik részeként a jegybanki tartalék egyenlegező tételként szerepel. A folyó fizetési mérleg hiánya azt jelenti, hogy több pénz áramlik ki, mint amennyi beérkezik; ezt a hiányt a tőke- és pénzügyi mérleg tételei finanszírozzák. Az adósságot nem generáló tételek (pl. közvetlen tőkebefektetések) levonása után megmaradó finanszírozási igényt adósságot generáló tételekkel, azaz külföldi hitelfelvétellel és állampapírok külföldi értékesítésével fedezik, ami az ország eladósodását növeli."}, "10/4": {"kulcsszavak": ["jövedelemcentralizáció", "újraelosztás", "redisztribúció", "jövedelemtulajdonosoktól elvont jövedelmek", "adók és járulékok", "közhatalmi bevételek", "közfeladatok finanszírozása", "gdp százalékában", "állami feladatellátás forrásai", "közfeladatok köre", "költségvetés hiánya"], "tananyag_hivatkozas": "1.3.2.1 fejezet (549-568. sor)", "mintavalasz": "A jövedelemcentralizáció az állam által a jövedelemtulajdonosoktól (lakosság, vállalkozások) elvont jövedelmek összértéke, amelyet az állam közhatalma birtokában adók, járulékok és más közhatalmi bevételek formájában von el; nem piaci szempontú, és a közfeladatok ellátását szolgálja. Az összehasonlíthatóság miatt a GDP százalékában fejezik ki. A befolyt, centralizált jövedelmek az állami feladatellátás finanszírozásának forrásai; ezek elköltését nevezzük a jövedelmek újraelosztásának (redisztribúció). A közfeladatok finanszírozási igénye általában meghaladja a bevételeket, ezért az állam rendszerint többet oszt újra, mint amennyit centralizál, ami megnöveli a költségvetés hiányát."}, "10/5": {"kulcsszavak": ["közhatalmi bevételek", "adójellegű bevételek", "díjjellegű bevételek", "szankciójellegű bevételek", "közteherviselés", "közvetlen ellenszolgáltatás nélküli", "áfa szja társasági adó", "illeték igazgatási szolgáltatási díj", "bírság", "fiskális pénzforrás", "ellenszolgáltatás", "jogellenes magatartás"], "tananyag_hivatkozas": "2.3.1.1 fejezet (957-1099. sor)", "mintavalasz": "A közhatalmi bevételek az államháztartás meghatározó bevételei (az összes bevétel kb. 90%-a), amelyeket az állam közhatalmát gyakorolva, fizetési kötelezettség előírásával szed be; alkotmányos alapjuk a közteherviselés elve. Három alcsoportjuk van. Az adójellegű bevételek tisztán fiskális pénzforrások, ellenükben nincs közvetlen ellenszolgáltatás (például általános forgalmi adó, személyi jövedelemadó, társasági adó, vagyonszerzési illeték). A díjjellegű bevételek esetén a fizető közvetlen ellenszolgáltatásban részesül (például eljárási illetékek, igazgatási szolgáltatási díjak, intézményi térítési díjak). A szankciójellegű bevételek a jogellenes magatartással összefüggő pénzbeli joghátrányok, a bírságok (például szabálysértési bírság, környezetvédelmi bírság)."}, "10/6": {"kulcsszavak": ["nemzeti vagyon rendeltetése", "közfeladat ellátásának biztosítása", "felelős rendeltetésszerű gazdálkodás", "vagyongazdálkodás feladata", "teherbíró képességhez igazodó", "átlátható tervszerű hatékony költségtakarékos", "érték megőrzése", "állag védelme", "értéknövelő használat gyarapítás", "elidegenítés", "kivezetésre szánt állami vagyon"], "tananyag_hivatkozas": "2.5.4 fejezet (1702-1726. sor)", "mintavalasz": "A nemzeti vagyon alapvető rendeltetése a közfeladat ellátásának biztosítása, és a nemzeti vagyonnal felelős módon, rendeltetésszerűen kell gazdálkodni. A nemzeti vagyongazdálkodás feladata a nemzeti vagyon rendeltetésének megfelelő, az állam és önkormányzat mindenkori teherbíró képességéhez igazodó, elsődlegesen a közfeladatok ellátásához és a társadalmi szükségletek kielégítéséhez szükséges, egységes elveken alapuló, átlátható, tervszerű, hatékony és költségtakarékos működtetése. További feladat a vagyon értékének megőrzése, állagának védelme, értéknövelő használata, hasznosítása, gyarapítása, a feleslegessé váló vagyontárgyak elidegenítése, valamint a kivezetésre szánt állami vagyon költségtakarékos, gyors és hatékony elidegenítése."}, "10/7": {"kulcsszavak": ["központi költségvetés kiadásai", "költségvetési szervek kiadásai", "közhatalmi közigazgatási kiadások", "közszolgáltatási kiadások", "beruházások", "támogatások", "transzferek", "adósságszolgálat", "európai uniós társfinanszírozás", "tartalékok", "fejezeti kezelésű előirányzatok", "tb-alapok"], "tananyag_hivatkozas": "3.1.1.2 fejezet (1896-1925. sor)", "mintavalasz": "A központi költségvetésben kiadást a központi költségvetési szervek feladatainak ellátására, nemzetközi és uniós kötelezettségek teljesítésére, más alrendszer, valamint államháztartáson kívüli személyek részére lehet előirányozni. A kiadások fő kategóriái: a költségvetési szervek kiadásai (ezen belül közhatalmi/közigazgatási és közszolgáltatási kiadások), a beruházások kiadásai, az államháztartáson kívülre irányuló támogatások (például lakás- és családtámogatások), a transzferek (más alrendszer, így az önkormányzatok támogatása), az adósságszolgálat, az egyéb kiadások, az európai uniós társfinanszírozás és hozzájárulás, valamint a tartalékok. A legnagyobb tételt a költségvetési szervek közhatalmi és közszolgáltatási kiadásai jelentik."}, "10/8": {"kulcsszavak": ["központi költségvetési tartalékok", "rendkívüli kormányzati intézkedésekre szolgáló tartalék", "céltartalék", "év közben meghozott kormányzati döntések", "elmaradó bevételek pótlása", "40%-os mértékig", "első félévben", "országgyűlés jóváhagyása", "évközi kormányzati intézkedés fedezete", "további tartalék"], "tananyag_hivatkozas": "3.1.1.3 fejezet (1927-1941. sor)", "mintavalasz": "A központi költségvetésről szóló törvényben tartalékot kell képezni. A rendkívüli kormányzati intézkedésekre szolgáló tartalék az év közben meghozott kormányzati döntésekből következő feladatok finanszírozására és az elháríthatatlan ok miatt elmaradó bevételek pótlására szolgál; terhére az első félévben legfeljebb 40%-os mértékig vállalható kötelezettség, ennél nagyobbhoz az Országgyűlés jóváhagyása kell. A céltartalék olyan kiadási előirányzat, amely évközi kormányzati intézkedés fedezetéül szolgál, célját és rendeltetését meghatározták, de fejezet, cím, alcím szerinti megoszlása a törvény elfogadásakor még nem ismert. A költségvetési törvény ezeken túl további tartalékot is meghatározhat, célja és felhasználási feltételei megjelölésével."}, "10/9": {"kulcsszavak": ["stabilitási törvény", "önkormányzati adósságot keletkeztető ügylet", "kormány előzetes hozzájárulása", "adatszolgáltatás", "kérelem", "kezesség és garancia", "helyi iparűzési adó", "vagyoni típusú adó", "kommunális adó", "hozzájárulás nélküli ügyletek", "uniós támogatás előfinanszírozás", "likvid hitel"], "tananyag_hivatkozas": "2.4 és 4.1 fejezet (1285-1291, 2275-2306. sor)", "mintavalasz": "Az önkormányzati alrendszer eladósodásának kontrolljaként az Alaptörvény és a stabilitási törvény előírta, hogy az önkormányzatok adósságot keletkeztető ügyletet – meghatározott kivételekkel – csak a Kormány előzetes hozzájárulásával köthetnek. Az önkormányzatoknak minden év elején adatszolgáltatást kell teljesíteniük a tervezett ügyletekről, az év során pedig kérelmet kell benyújtaniuk. A települési önkormányzat csak akkor köthet ilyen ügyletet, ha helyi iparűzési adót vagy egy vagyoni típusú adót, illetve a magánszemélyek kommunális adóját bevezette. Egyes ügyletek hozzájárulás nélkül is létrejöhetnek, például az uniós támogatások előfinanszírozására szolgáló hitelek, illetve az éven belüli működési célú (likvid) hitelek."}, "10/10": {"kulcsszavak": ["vállalkozási tevékenység", "rendszeres haszonszerzés céljából", "nyereségérdekelt", "államháztartáson kívüli forrásból", "nem kötelezően végzett", "termelő szolgáltató értékesítő tevékenység", "nem veszélyeztetheti az alaptevékenységet", "felső határa", "közvetlen és közvetett kiadás", "amortizáció", "maradvány nem lehet negatív", "társasági adó", "elkülönített tervezés és elszámolás"], "tananyag_hivatkozas": "5.4.1 fejezet (2760-2784. sor)", "mintavalasz": "A vállalkozási tevékenység rendszeres haszonszerzés céljából (nyereségérdekelt módon), államháztartáson kívüli forrásból, nem kötelezően végzett termelő, szolgáltató, értékesítő tevékenység, amelyet a költségvetési szerv az alaptevékenysége mellett végezhet. A jogszabály korlátai: végzése nem veszélyeztetheti az alaptevékenység ellátását; felső határát a kiadási előirányzatok arányában meg kell határozni; bevételének fedeznie kell az összes közvetlen és a hozzárendelhető közvetett kiadást, valamint az amortizációt; a vállalkozási tevékenységek összesített maradványa nem lehet negatív, és a nyereség egy részét – a társasági adó mértékének megfelelően – be kell fizetni a központi költségvetésbe. Az alap- és vállalkozási tevékenység bevételeit és kiadásait elkülönítetten kell megtervezni és elszámolni."}, "10/11": {"kulcsszavak": ["államháztartási kontrollok rendszere", "szabályszerű szabályozott gazdaságos hatékony eredményes gazdálkodás", "valamennyi alrendszerre kiterjed", "három pillér", "külső ellenőrzés", "kormányzati szintű ellenőrzés", "belső kontroll és belső ellenőrzés", "törvényességi-szabályszerűségi ellenőrzés", "célszerűségi-gazdaságossági-hatékonysági ellenőrzés", "általános ellenőrzés"], "tananyag_hivatkozas": "6.1 fejezet (2955-2980. sor)", "mintavalasz": "Az államháztartási kontrollok alapvető célja az államháztartási pénzeszközökkel és vagyonnal történő szabályszerű, szabályozott, gazdaságos, hatékony és eredményes gazdálkodás kialakítása, és a kontroll az államháztartás valamennyi alrendszerére kiterjed. Az ellenőrzési tevékenység az egész államháztartási rendszerre és minden költségvetési szervre vonatkozik, érinti mind a pénz-, mind a vagyongazdálkodást, és felöleli az ellenőrzés mindkét alaptípusát: a törvényességi-jogszerűségi-szabályszerűségi és a célszerűségi-gazdaságossági-hatékonysági ellenőrzést. A kontrollrendszer három pillérre épül: a külső ellenőrzésre, a kormányzati szintű ellenőrzésre, valamint a belső kontrollra és belső ellenőrzésre, amelyek együtt egy egészet alkotnak."}, "10/12": {"kulcsszavak": ["kormányzati szintű ellenőrzés", "kormányzati ellenőrzési hivatal", "kehi", "kormány ellenőrző szerve", "magyar államkincstár", "kormánydöntések végrehajtása", "fejezeti kezelésű előirányzatok", "elkülönített állami pénzalapok", "költségvetési támogatások felhasználása", "többségi állami befolyás", "éves ellenőrzési terv", "soron kívüli ellenőrzés"], "tananyag_hivatkozas": "6.3 fejezet (3108-3144. sor)", "mintavalasz": "A kormányzati szintű ellenőrzés a kormányzati ellenőrzési szerv és a Magyar Államkincstár ellenőrzési tevékenységét foglalja magában; a közpénzek felhasználását, a nemzeti vagyonnal való gazdálkodást és a közfeladatok hatékony ellátását vizsgálja. A kormányzati ellenőrzési szerv jelenleg a Kormányzati Ellenőrzési Hivatal (KEHI), amely nem az Országgyűlés, hanem a Kormány ellenőrző szerve. A KEHI ellenőrzési jogköre kiterjed a kormánydöntések végrehajtására, a Kormány irányítása alá tartozó fejezetek központi és fejezeti kezelésű előirányzataira, az elkülönített állami pénzalapokra és tb-alapokra, az általuk irányított költségvetési szervekre, a nyújtott költségvetési támogatások felhasználására, valamint a többségi állami befolyással működő gazdasági társaságokra. Hatásköre nem terjed ki a nem a Kormány irányítása alá tartozó fejezetekre és az MNB-re; ellenőrzéseit éves terv alapján, illetve soron kívüli elrendelésre végzi."}, "10/13": {"kulcsszavak": ["belső kontrollrendszer", "szabályszerű és hatékony gazdálkodás elősegítése", "kockázatok kezelése", "költségvetési szerv vezetője felelős", "kontrollkörnyezet", "integrált kockázatkezelési rendszer", "kontrolltevékenységek", "információs és kommunikációs rendszer", "nyomon követési monitoring rendszer", "belső ellenőrzés", "független tárgyilagos bizonyosságot adó és tanácsadó tevékenység", "vezetőnek közvetlenül alárendelve"], "tananyag_hivatkozas": "6.4 fejezet (3182-3259. sor)", "mintavalasz": "A belső kontrollrendszer célja a szabályszerű és hatékony gazdálkodás elősegítése, szükség esetén a belső ellenőrzés eszközeivel való kikényszerítése; végső soron a kockázatok kezelése érdekében kialakított folyamatrendszer. Létrehozásáért, működtetéséért és fejlesztéséért a költségvetési szerv vezetője felelős, akinek ki kell alakítania a kontrollkörnyezetet, az integrált kockázatkezelési rendszert, a kontrolltevékenységeket, az információs és kommunikációs rendszert, valamint a nyomon követési (monitoring) rendszert. A belső ellenőrzés független, tárgyilagos bizonyosságot adó és tanácsadó tevékenység, amelynek célja a szervezet működésének fejlesztése és eredményességének növelése. Függetlenségét biztosítja, hogy a belső ellenőr a tevékenységét a szerv vezetőjének közvetlenül alárendelve végzi, jelentéseit neki küldi, és más tevékenységbe nem vonható be; kialakításáról és működtetéséről a vezető köteles gondoskodni."}, "10/14": {"kulcsszavak": ["költségvetési szerv alapítása", "alapítás feltételei", "közfeladat alaptevékenységként", "működési feltételek adottak", "hatékonyan teljesíthető", "pénzügyi fedezet rendelkezésre áll", "alapító okirat", "országgyűlés kormány miniszter", "magyar államkincstár", "törzskönyvi nyilvántartás", "közhiteles", "bejegyzéssel jön létre"], "tananyag_hivatkozas": "5.2.1 fejezet (2583-2648. sor)", "mintavalasz": "Költségvetési szerv akkor alapítható, ha a közfeladat alaptevékenységként ekként biztosítható, a működéshez szükséges feltételek adottak, a közfeladat hatékonyan teljesíthető, és a működtetéshez szükséges pénzügyi fedezet rendelkezésre áll. Központi költségvetési szerv alapítására az Országgyűlés, a Kormány vagy a miniszter jogosult; az Országgyűlés vagy a Kormány által alapított szervről jogszabályban, más alapító esetén alapító okiratban kell rendelkezni. Az alapító okiratot a Magyar Államkincstár formanyomtatványán az alapító szerv adja ki, és tartalmaznia kell többek között a szerv nevét, közfeladatát, alaptevékenységeit, működési körét és irányító szervét. A költségvetési szerv a Magyar Államkincstár által vezetett törzskönyvi nyilvántartásba történő bejegyzéssel jön létre; e nyilvántartás közhiteles és nyilvános."}, "10/15": {"kulcsszavak": ["infláció", "pénzromlás", "árszínvonal tartós emelkedése", "pénz vásárlóerejének romlása", "defláció", "negatív infláció", "monetáris politika", "fiskális politika", "fogyasztói árindex", "kúszó vágtató hiperinfláció", "beruházási kedv csökkenése", "kezelhető moderálható infláció", "gazdasági visszaesés"], "tananyag_hivatkozas": "1.3.1.2 fejezet (456-486. sor)", "mintavalasz": "Az infláció (pénzromlás) az árszínvonal tartós emelkedése a pénz vásárlóerejének romlása mellett; veszélye, hogy bizonytalanná teszi a nemzetgazdaság szereplőit, lehetetlenné teszi a reális tervezést, növeli a kockázatokat, csökkenti a beruházási kedvet és közvetve a gazdasági növekedést. Önmagát erősítő (kumulatív) folyamat, fajtái a kúszó, a vágtató és a hiperinfláció; leggyakoribb mérőszáma a fogyasztói árindex. Megfékezéséhez a monetáris politika (pénzmennyiség, kamatszint, árfolyam) és a fiskális politika összehangolt működésére van szükség. A defláció az árszínvonal csökkenése, azaz negatív infláció, amely szintén visszafogja a gazdasági növekedést, sőt visszaesést is előidézhet. A cél a moderálható, kezelhető infláció, amely mértéktartó alakulása többletbevételhez juttatja a költségvetést."}, "10/16": {"kulcsszavak": ["gazdálkodási alapelvek jogi garanciái", "magatartási normák", "államháztartási törvény", "végrehajtási rendeletek", "számviteli törvény", "eljárási szabályok", "magatartási szabályok", "számbavételi mód", "költségvetés készítése és elszámolás", "kontrollmechanizmusok", "követendő elv", "egységes érvényesülés"], "tananyag_hivatkozas": "2.2 fejezet (748-819. sor)", "mintavalasz": "Az államháztartási alapelvek olyan magatartási normák, amelyeket az államháztartáshoz tartozó valamennyi szervezetnek követnie kell a költségvetés tervezése, végrehajtása, a bevételek és kiadások számbavétele és a beszámolás során. Az alapelvek érvényesítésének vannak jogi garanciái: az erre szolgáló joganyag egyrészt a költségvetés készítésével és az elszámolással kapcsolatos eljárási szabályokat, másrészt a végrehajtással és gazdálkodással kapcsolatos magatartási szabályokat rögzít, harmadrészt a pénzügyi folyamatok számbavételi módját határozza meg. Érvényesítésüket alapvetően az államháztartási törvény, annak végrehajtási rendeletei és a számviteli törvény biztosítja. A céljuk eléréséhez olyan kontrollmechanizmusokra is szükség van, amelyek megakadályozzák a közpénzek nem célirányos és nem gazdaságos elköltését."}, "10/17": {"kulcsszavak": ["elkülönített állami pénzalap", "központi alrendszer", "törvény hozhat létre", "adott közfeladat", "részben államháztartáson kívüli forrásból", "alapszerű elszámolás", "rendeltetés", "bevételi források", "kiadások köre", "rendelkezésre feljogosított miniszter testület", "járulékok hozzájárulások", "közvetlenül hozzárendelhető források"], "tananyag_hivatkozas": "3.3 fejezet (2138-2153. sor)", "mintavalasz": "Az elkülönített állami pénzalap az államháztartás központi alrendszerén belül működő alap, amely adott közfeladat részben államháztartáson kívüli forrásból történő ellátását biztosítja, és az állam nevében beszedendő bevételek és teljesítendő kiadások alapszerű elszámolására szolgál. Elkülönített állami pénzalapot csak törvény hozhat létre, amelyben meg kell határozni az alap rendeltetését, bevételi forrásait, a terhére teljesíthető kiadások körét, valamint a rendelkezésre feljogosított, az alap pénzeszközeinek felhasználásáért felelős minisztert vagy testületet. További törvényi feltétel, hogy az alap feladatainak finanszírozásához részben államháztartáson kívülről származó, törvényben meghatározott források (járulékok, hozzájárulások vagy egyéb befizetések) legyenek közvetlenül hozzárendelhetők."}, "10/18": {"kulcsszavak": ["önkormányzatok belső ellenőrzése", "jegyző", "belső kontrollrendszer működtetése", "belső ellenőrzés működtetése", "módszertani útmutatók", "nemzetközi belső ellenőrzési standardok", "felügyelt költségvetési szervek ellenőrzése", "pénzügyi bizottság", "kétezernél több lakosú település", "költségvetési javaslat véleményezése", "adósságot keletkeztető kötelezettségvállalás vizsgálata"], "tananyag_hivatkozas": "6.4 fejezet (3260-3286. sor)", "mintavalasz": "A helyi önkormányzatoknál a jegyző köteles belső kontrollrendszert működtetni, amely biztosítja a rendelkezésre álló források szabályszerű, gazdaságos, hatékony és eredményes felhasználását. A belső kontrollrendszeren belül a jegyző köteles gondoskodni a belső ellenőrzés működtetéséről az államháztartásért felelős miniszter módszertani útmutatói és a nemzetközi belső ellenőrzési standardok figyelembevételével. A belső ellenőrzés keretében gondoskodni kell a felügyelt költségvetési szervek ellenőrzéséről is. Az önkormányzati belső kontrollrendszer része a kétezernél több lakosú településeken kötelezően létrehozandó pénzügyi bizottság, amely véleményezi a költségvetési javaslatot és a beszámolókat, figyelemmel kíséri a bevételek és a vagyon alakulását, valamint vizsgálja az adósságot keletkeztető kötelezettségvállalás indokait és gazdasági megalapozottságát."}, "5/1": {"kulcsszavak": ["közszféra", "nemzetgazdaság meghatározó organizáló része", "közjavak", "közjavak előállítása védelme újraelosztása", "színtere", "közfeladat", "kormány", "adók", "állami vagyonhasznosítás", "közpénzek szétosztása", "közpénzügyi politika", "államháztartás"], "tananyag_hivatkozas": "1.1 fejezet (159-170. sor)", "mintavalasz": "A közszféra a nemzetgazdaság meghatározó, organizáló része, a közjavak előállításának, védelmének és újraelosztásának színtere. A közjavak keletkeztetését és szétosztását a demokratikus választásokon győztes, kormányt alakító politikai párt végzi, politikai és kormányzati programja mentén. A Kormány az állami jövedelem keletkeztetését adókon és állami vagyonhasznosításon keresztül biztosítja, az így előálló közpénzeket pedig társadalmi, vállalati és állami feladatok között osztja szét. Ezt a közpénzügyi politikai koncepciót az államháztartás technikai rendszerén keresztül, a költségvetési törvényekbe iktatva valósítja meg, így a közjavak a közszférán belül a közös szükségletek kielégítését szolgálják."}, "5/2": {"kulcsszavak": ["közfeladat", "jogszabályban meghatározott állami vagy önkormányzati feladat", "közérdekből", "követelmények és feltételek", "lakosság közszolgáltatásokkal való ellátása", "nemzetközi szerződésekben vállalt kötelezettségek", "infrastruktúra biztosítása", "államháztartási törvény definiálja", "arra kötelezett"], "tananyag_hivatkozas": "2.5.4 és 5.1 fejezet (1704-1709, 2544-2547. sor)", "mintavalasz": "A közfeladat fogalmát az államháztartási törvény definiálja. A közfeladat jogszabályban meghatározott állami vagy önkormányzati feladat, amelyet az arra kötelezett közérdekből, jogszabályban meghatározott követelményeknek és feltételeknek megfelelve végez. A fogalom magában foglalja a lakosság közszolgáltatásokkal való ellátását, az állam nemzetközi szerződésekben vállalt kötelezettségeiből adódó közérdekű feladatokat, valamint az e feladatok ellátásához szükséges infrastruktúra biztosítását is. A közfeladatok sajátossága, hogy a közösség érdekeit szolgálják, és jogalapjukat valamilyen közhatalmi (közjogi) aktus, azaz jogszabály képezi."}, "5/3": {"kulcsszavak": ["költségvetési szerv", "államháztartás részét képező nyilvántartásba vett jogi személy", "közfeladat alaptevékenységként", "haszonszerzési cél nélkül", "alapító okirat", "irányítás vagy felügyelet mellett", "jóváhagyott éves költségvetés alapján gazdálkodik", "jogi személyiség", "egyszemélyi vezetés"], "tananyag_hivatkozas": "5.1 fejezet (2548-2560. sor)", "mintavalasz": "A költségvetési szerv az államháztartás részét képező, nyilvántartásba vett jogi személy, amely a közfeladat ellátásának szervezeti kerete. A költségvetési szerv jogszabályban meghatározott és az alapító okiratban rögzített állami vagy önkormányzati feladatokat (közfeladatot) lát el alaptevékenységként, amelyet haszonszerzési cél nélkül folytat. Feladatait jogszabályban meghatározott követelmények alapján, jogszabályban meghatározott szerv vagy személy irányítása vagy felügyelete mellett, az alapító okiratban megjelölt működési körben, közfeladat-ellátási kötelezettséggel végzi, és az irányító szerv által jóváhagyott éves költségvetés alapján gazdálkodik. Jogi személyiség nélkül költségvetési szerv nem létezhet."}, "5/4": {"kulcsszavak": ["alaptörvény 32. cikk", "helyi közügyek intézése", "gazdálkodási önállóság", "önkormányzati tulajdon", "tulajdonost megillető jogok", "meghatározza költségvetését", "önállóan gazdálkodik", "vállalkozási tevékenység", "helyi adók fajtája és mértéke", "köztulajdon", "törvény keretei között"], "tananyag_hivatkozas": "4.1 fejezet (2209-2218. sor)", "mintavalasz": "Az Alaptörvény 32. cikke szerint a helyi önkormányzat a helyi közügyek intézése körében – a gazdálkodási önállóságához kapcsolódóan, a törvény keretei között – az alábbi jogokat gyakorolja: gyakorolja az önkormányzati tulajdon tekintetében a tulajdonost megillető jogokat; meghatározza költségvetését, és annak alapján önállóan gazdálkodik; az e célra felhasználható vagyonával és bevételeivel a kötelező feladatai ellátásának veszélyeztetése nélkül vállalkozási tevékenységet folytathat; és dönt a helyi adók fajtájáról és mértékéről. Az Alaptörvény 32. cikk (6) bekezdése szerint a helyi önkormányzatok tulajdona köztulajdon, amely feladataik ellátását szolgálja."}, "5/5": {"kulcsszavak": ["gazdasági növekedés", "gazdaság hosszú távú fejlődése", "újratermelés bővülése", "mennyiségi kategória", "gdp", "gnp", "mutató", "éves gdp változása", "változatlan áron", "elosztható jövedelem nagysága", "államháztartásra gyakorolt hatás"], "tananyag_hivatkozas": "1.3.1.1 fejezet (441-454. sor)", "mintavalasz": "A gazdasági növekedésen általában a gazdaság hosszú távú fejlődését, illetve az újratermelés bővülésének mértékét értjük; szigorúan véve mennyiségi kategória, szemben a minőségi fejlődéssel. Mérésére leggyakrabban a GDP (esetleg a GNP) mutatóját alkalmazzák. Az államháztartás szempontjából az a legfontosabb, hogy az éves GDP az előző évhez képest milyen irányban mozdult el, mennyivel nőtt vagy csökkent: első körben ettől függ az elosztható jövedelem nagysága, másodsorban az alkalmazott adórendszertől. A növekedés szemléltetésére az éves növekedés olyan idősorát használják, amelyben a GDP-t változatlan áron viszonyítják az előző évhez."}, "5/6": {"kulcsszavak": ["államháztartási hiány", "deficit", "elvont és újraelosztott jövedelem közötti különbség", "gdp százalékában", "maastrichti kritérium 3% alatt", "deficitfinanszírozás", "lakosság nettó megtakarítása", "külföldi erőforrások bevonása", "hitelfelvétel", "állampapírok kibocsátása", "túlzotthiány-eljárás"], "tananyag_hivatkozas": "1.3.2.2 fejezet (570-598. sor)", "mintavalasz": "Az államháztartási hiány az elvont (centralizált) és az újraelosztott jövedelem közötti különbség; szokás a GDP százalékában megadni, és a maastrichti kritériumok szerint hosszabb távon 3% alatt kell tartani. Önmagában a hiány nem negatív jelenség, finanszírozása többnyire nem okoz gondot, ha a lakosság nettó megtakarítása fedezi a hiányt. A deficitfinanszírozás más szereplőktől való hitelfelvétellel, illetve állami kötvények (állampapírok) kibocsátásával történik. Ha azonban a hiány nagyobb a lakosság nettó megtakarításainál, csak külföldi erőforrások bevonásával fedezhető, ami elszívja a vállalkozások elől a forrásokat. A megengedett küszöbérték túllépése esetén uniós szinten túlzotthiány-eljárás indulhat."}, "5/7": {"kulcsszavak": ["felhasználási kötöttség elve", "előre meghatározott célhoz kötöttség", "számadási kötelezettség", "uniós források adományok segélyek", "elkülönített elszámolás", "kizárólag meghatározott célra", "céljelleggel juttatott összegek", "rendeltetésszerű felhasználás", "adók módjára behajtható", "államháztartásból finanszírozott vagy támogatott"], "tananyag_hivatkozas": "2.2.2 fejezet (895-903. sor)", "mintavalasz": "A felhasználási kötöttség elve az államháztartási rendszerből származó egyes támogatások előre meghatározott célhoz való kötöttségét és a felhasználással kapcsolatos számadási kötelezettséget foglalja magában. Két vonatkozása van: egyfelől az uniós források, adományok, segélyek elkülönített elszámolás mellett és kizárólag a meghatározott célra használhatók fel. Másfelől az államháztartásból finanszírozott vagy támogatott természetes és jogi személyeknek számadási kötelezettségük van a céljelleggel juttatott összegek rendeltetésszerű felhasználásáról. A nem rendeltetésszerűen használt összegek adók módjára behajthatók."}, "5/8": {"kulcsszavak": ["közbeszerzési kötelezettség elve", "államháztartás alrendszereihez tartozó minden szervezet", "beszerzési értékhatár", "árubeszerzés", "építési-beruházás", "szolgáltatás-megrendelés", "közbeszerzés alkalmazása", "kiadási előirányzatok felhasználása", "értékhatár költségvetési törvény", "eljárás közbeszerzési törvény"], "tananyag_hivatkozas": "2.2.2 fejezet (904-909. sor)", "mintavalasz": "A közbeszerzési kötelezettség elve szerint az államháztartás alrendszereihez tartozó minden szervezet köteles – bizonyos beszerzési értékhatárokat meghaladóan – az árubeszerzési, építési-beruházási, illetve szolgáltatás-megrendelési célra előirányzott kifizetéseket, az e körbe tartozó kiadási előirányzatok felhasználását közbeszerzés alkalmazásához kötni. Az értékhatárokat évente a központi költségvetési törvény, a közbeszerzési eljárás menetét pedig a közbeszerzési törvény határozza meg."}, "5/9": {"kulcsszavak": ["forgalomképtelen nemzeti vagyon", "nem idegeníthető el", "nem terhelhető meg", "biztosítékul nem adható", "osztott tulajdon nem létesíthető", "kizárólagos tulajdonban álló vagyon", "nemzetgazdasági szempontból kiemelt jelentőségű vagyon", "koncesszió útján hasznosítható", "törvényben meghatározott kivétel"], "tananyag_hivatkozas": "2.5.1 fejezet (1377-1395. sor)", "mintavalasz": "A forgalomképtelen nemzeti vagyonba tartozó vagyonelemek – a nemzeti vagyonról szóló törvényben meghatározott kivételekkel – nem idegeníthetők el, a törvényben felsorolt jogok (pl. vagyonkezelői jog, használati jog) kivételével nem terhelhetők meg, biztosítékul nem adhatók, és azon osztott tulajdon nem létesíthető. A törvény a forgalomképtelen nemzeti vagyon körébe sorolja a kizárólagos tulajdonban álló vagyont és a nemzetgazdasági szempontból kiemelt jelentőségű vagyont. A kizárólagos állami és önkormányzati tulajdon a legszigorúbban védett kör, amely főszabályként kizárólag koncesszió útján hasznosítható; a kiemelt jelentőségű vagyon szabályozása kevésbé szigorú, vagyonkezelés, bérlet, haszonbérlet keretében hasznosítható."}, "5/10": {"kulcsszavak": ["helyi önkormányzat saját bevételei", "helyi adók", "települési adó", "saját tevékenységből és vállalkozásból származó bevétel", "vagyonhasznosítás", "nyereség osztalék kamat bérleti díj", "átvett pénzeszközök", "illeték bírság díj", "egyéb sajátos bevételek", "intézményi bevétel"], "tananyag_hivatkozas": "4.2.1.1 fejezet (2341-2350. sor)", "mintavalasz": "Az önkormányzati törvény szerint a helyi önkormányzat saját bevételei: a helyi adók (saját bevételnek minősül a települési adóból befolyt bevétel is); a saját tevékenységből, vállalkozásból és az önkormányzati vagyon hasznosításából származó bevétel, nyereség, osztalék, kamat és bérleti díj; az átvett pénzeszközök; a törvény alapján a helyi önkormányzatot megillető illeték, bírság, díj; valamint a helyi önkormányzat és intézményei egyéb sajátos bevételei. A települési önkormányzatok saját bevételeinek meghatározó része a helyi adó."}, "5/11": {"kulcsszavak": ["önkormányzat vállalkozási szabadsága", "nem korlátlan", "helyi közösségi érdekekkel összhangban", "kötelező feladatai ellátásának veszélyeztetése nélkül", "felelőssége nem haladja meg vagyoni hozzájárulását", "vagyonrész elvesztése", "csőd esetén nem felel többi vagyonával", "garanciális szabály", "önként vállalt feladat"], "tananyag_hivatkozas": "4.1 fejezet (2320-2329. sor)", "mintavalasz": "Az önkormányzatok részt vehetnek vállalkozásokban, főleg azért, hogy a vállalkozás hasznából teremtsék elő a feladataik ellátásához szükséges forrásokat, e célra felhasználható vagyonukkal és bevételeikkel, a kötelező feladataik ellátásának veszélyeztetése nélkül. A helyi önkormányzat vállalkozási szabadsága azonban nem korlátlan: a vállalkozási tevékenység csak a helyi közösségi érdekekkel összhangban lehetséges. Garanciális szabály, hogy a helyi önkormányzat csak olyan vállalkozásban vehet részt, amelyben felelőssége nem haladja meg vagyoni hozzájárulásának mértékét. Ez azt jelenti, hogy a vállalkozás csődje esetén csak a befektetett vagyonrészét veszítheti el, de nem felel a többi vagyonával."}, "5/12": {"kulcsszavak": ["teljesítésigazolás", "szakmai teljesítés igazolása", "kötelezettségvállalás folyamata", "teljesítés megtörténte", "termék beszerzése szolgáltatás igénybevétele", "kiadások jogosságának ellenőrzése", "teljesítés tényére utalás", "igazolás dátuma", "teljesítésigazolót a kötelezettségvállaló jelöli ki", "érvényesítést megelőzi"], "tananyag_hivatkozas": "5.4.3 fejezet (2913-2917. sor)", "mintavalasz": "A teljesítésigazolás a gazdálkodás vertikális folyamatának része, amely a kötelezettségvállalás és a pénzügyi ellenjegyzés után, az érvényesítés előtt következik. A teljesítés megtörténtét (a termék beszerzését, a szolgáltatás igénybevételét) követően annak teljesítését szakmailag igazolni kell. A szakmai teljesítésigazoló személyét a kötelezettségvállaló jelöli ki írásban, de a teljesítés igazolását maga is elvégezheti. A teljesítés igazolása során az okmányok alapján ellenőrizni kell a kiadások teljesítésének jogosságát; az igazolás tartalmazza a teljesítés tényére történő utalást és az igazolás dátumát. A teljesítésigazolót a kötelezettségvállalás teljesítésének igazolásából polgári jogi és büntetőjogi felelősség terheli."}, "5/13": {"kulcsszavak": ["költségvetési szervek nyilvántartása", "törzskönyvi nyilvántartás", "magyar államkincstár vezeti", "bejegyzéssel jön létre", "törléssel szűnik meg", "közhiteles", "jóhiszeműség vélelme", "nyilvános adatok", "bárki megtekintheti", "elektronikus úton hozzáférhető", "irányító szerv intézkedik"], "tananyag_hivatkozas": "5.2.1 fejezet (2613-2648. sor)", "mintavalasz": "A költségvetési szerv a Magyar Államkincstár által vezetett törzskönyvi nyilvántartásba történő bejegyzéssel jön létre, és a nyilvántartásból való törléssel, a törlés napjával szűnik meg. A törzskönyvi nyilvántartás közhiteles, ami azt jelenti, hogy az ellenkező bizonyításáig vélelmezni kell a jóhiszeműségét annak, aki a nyilvántartásban szereplő adatokban bízva szerez jogot, és a bejegyzett adatról vélelmezni kell, hogy az fennáll. A nyilvántartás fennálló és törölt adatai, valamint az alapító okirat nyilvánosak, azokat bárki megtekintheti, feljegyzést készíthet, és az adatok elektronikus úton is hozzáférhetők. A bejegyzés ügyében az irányító szerv köteles intézkedni a jogszabályban meghatározott határidőn belül."}, "5/14": {"kulcsszavak": ["magyar államkincstár", "kormányzati szintű ellenőrzés", "kiáramló pénzeszközök felhasználása és elszámolása", "kötelező érvényű határozat", "visszafizettetés", "költségvetési hozzájárulások és támogatások", "normatív hozzájárulások", "könyvvezetési kötelezettség", "adatszolgáltatási kötelezettség", "éves költségvetési beszámoló", "sajátos ellenőrzési jogkör"], "tananyag_hivatkozas": "6.3 fejezet (3163-3179. sor)", "mintavalasz": "A Magyar Államkincstár a kormányzati szintű ellenőrzés egyik szereplője, amely a költségvetési hozzájárulásokhoz és támogatásokhoz (például az önkormányzati alrendszer számára nyújtott normatív hozzájárulásokhoz) kapcsolódóan ellenőrzési jogköröket gyakorol. Ellenőrzi a költségvetésben megtervezett és kiáramló pénzeszközök felhasználását és elszámolását. Az Állami Számvevőszékkel szembeni jelentős különbség, hogy a Magyar Államkincstár kötelező érvényű határozatot hozhat, és a nem rendeltetésszerű közpénzfelhasználást visszafizettetheti. Sajátos ellenőrzési jogköre a helyi önkormányzatok és az általuk irányított szervek könyvvezetési és adatszolgáltatási kötelezettségének, valamint az éves költségvetési beszámoló megbízható, valós összképének vizsgálatára terjed ki."}};
+const STORAGE_KEY = 'kozigazgatasi_szakvizsga_3modul_2026_v1';
+const TOTAL_Q = 41;
+
+function normalize(s) {
+  return (s || '').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9áéíóöőúüű\s]/gi, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function keywordFound(normAnswer, kw) {
+  const nkw = normalize(kw);
+  if (!nkw) return false;
+  if (normAnswer.includes(nkw)) return true;
+  const words = nkw.split(' ').filter(w => w.length > 3);
+  if (words.length >= 2) {
+    return words.every(w => normAnswer.includes(w));
+  }
+  return false;
+}
+
+function checkAnswer(qid) {
+  const data = KEYWORDS[qid];
+  if (!data) return;
+  const ta = document.querySelector('textarea[data-q="' + qid + '"]');
+  const answer = ta.value.trim();
+  const maxPont = parseInt(qid.split('/')[0], 10);
+  const resultEl = document.querySelector('[data-result="' + qid + '"]');
+  const pointsEl = document.querySelector('[data-points="' + qid + '"]');
+
+  const normAnswer = normalize(answer);
+  const found = [], missing = [];
+  data.kulcsszavak.forEach(kw => {
+    if (answer && keywordFound(normAnswer, kw)) found.push(kw); else missing.push(kw);
+  });
+
+  const total = data.kulcsszavak.length;
+  const ratio = total ? found.length / total : 0;
+  let pont = Math.round(Math.min(1, ratio / 0.65) * maxPont);
+  if (answer.length < 15) pont = 0;
+
+  let cls, label;
+  const pct = Math.round(ratio * 100);
+  if (ratio >= 0.6) { cls = 's-good'; label = 'Erős válasz – a lényegi fogalmak nagy része szerepel.'; }
+  else if (ratio >= 0.35) { cls = 's-mid'; label = 'Részben jó – több kulcsfogalom hiányzik, érdemes bővíteni.'; }
+  else { cls = 's-low'; label = answer.length < 15 ? 'Nincs érdemi válasz.' : 'Hiányos – a lényegi fogalmak többsége hiányzik.'; }
+
+  const foundChips = found.map(k => '<span class="chip found">' + escapeHtml(k) + '</span>').join('');
+  const missingChips = missing.map(k => '<span class="chip missing">' + escapeHtml(k) + '</span>').join('');
+
+  resultEl.innerHTML =
+    '<div class="scorebar ' + cls + '">' +
+      '<span class="score-num">' + pont + ' / ' + maxPont + '</span>' +
+      '<span class="score-label">' + label + ' <br><span style="color:#777">Kulcsszó-lefedettség: ' + found.length + '/' + total + ' (' + pct + '%)</span></span>' +
+    '</div>' +
+    (found.length ? '<div class="kwblock"><div class="kwtitle">Megtalált kulcsfogalmak</div><div class="chips">' + foundChips + '</div></div>' : '') +
+    (missing.length ? '<div class="kwblock"><div class="kwtitle">Hiányzó / nem felismert kulcsfogalmak</div><div class="chips">' + missingChips + '</div></div>' : '') +
+    '<details class="detail"><summary>Tananyag-alapú mintaválasz megtekintése</summary>' +
+      '<div class="body">' + escapeHtml(data.mintavalasz) + '</div>' +
+      '<div class="ref">Tananyag: ' + escapeHtml(data.tananyag_hivatkozas || '') + '</div>' +
+    '</details>';
+  resultEl.classList.add('show');
+  pointsEl.textContent = pont + ' / ' + maxPont + ' pont';
+  pointsEl.style.color = cls === 's-good' ? 'var(--green)' : (cls === 's-mid' ? 'var(--amber)' : 'var(--red)');
+  updateSummary();
+}
+
+function checkAll() {
+  Object.keys(KEYWORDS).forEach(qid => {
+    const ta = document.querySelector('textarea[data-q="' + qid + '"]');
+    if (ta && ta.value.trim().length >= 15) checkAnswer(qid);
+  });
+  const first = document.querySelector('.result.show');
+  if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
+  updateSummary();
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+}
+
+let saveTimer = null;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const data = {};
+    document.querySelectorAll('textarea[data-q]').forEach(ta => { if (ta.value.trim()) data[ta.dataset.q] = ta.value; });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const el = document.getElementById('saveIndicator');
+    el.classList.add('visible'); setTimeout(() => el.classList.remove('visible'), 1200);
+    updateSummary();
+  }, 400);
+}
+function load() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    document.querySelectorAll('textarea[data-q]').forEach(ta => {
+      if (saved[ta.dataset.q]) { ta.value = saved[ta.dataset.q]; ta.classList.add('filled'); }
+    });
+  } catch(e) {}
+  updateSummary();
+}
+function updateSummary() {
+  const tas = document.querySelectorAll('textarea[data-q]');
+  let filled = 0;
+  tas.forEach(ta => { if (ta.value.trim().length > 10) { filled++; ta.classList.add('filled'); } else ta.classList.remove('filled'); });
+  let pont = 0, maxSoFar = 0, checked = 0;
+  document.querySelectorAll('.qpoints[data-points]').forEach(el => {
+    const m = el.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+    if (m) { pont += parseInt(m[1],10); maxSoFar += parseInt(m[2],10); checked++; }
+  });
+  let txt = filled + ' / ' + TOTAL_Q + ' kitöltve';
+  if (checked > 0) txt += ' &nbsp;·&nbsp; <b>' + pont + '/' + maxSoFar + ' pont</b> (' + checked + ' ellenőrizve)';
+  document.getElementById('summary').innerHTML = txt;
+}
+function clearAll() {
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('textarea[data-q]').forEach(ta => { ta.value=''; ta.classList.remove('filled'); });
+  document.querySelectorAll('.result').forEach(r => { r.innerHTML=''; r.classList.remove('show'); });
+  document.querySelectorAll('.qpoints').forEach(p => p.textContent='');
+  updateSummary();
+}
+function buildExportText() {
+  let out = '=== KÖZIGAZGATÁSI SZAKVIZSGA – III. MODUL – KITÖLTÖTT VÁLASZOK ===\n\n';
+  document.querySelectorAll('.qcard').forEach(card => {
+    const num = card.querySelector('.qnum').textContent.trim();
+    const qtext = card.querySelector('.qtext').textContent.trim();
+    const answer = card.querySelector('textarea').value.trim();
+    out += '[' + num + '] ' + qtext + '\nVÁLASZ: ' + (answer || '(nincs kitöltve)') + '\n\n';
+  });
+  return out;
+}
+function downloadTxt() {
+  const blob = new Blob([buildExportText()], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob); const a = document.createElement('a');
+  a.href = url; a.download = 'valaszok_III_modul_' + new Date().toISOString().slice(0,10) + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+document.querySelectorAll('textarea[data-q]').forEach(ta => ta.addEventListener('input', save));
+load();
+</script>
+
+</body>
+</html>
