@@ -15,12 +15,13 @@
   header { background: var(--primary); color: #fff; padding: 40px 32px 36px; box-shadow: var(--shadow); text-align: center; }
   header h1 { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: 0.2px; }
   header .subtitle { margin-top: 10px; font-size: 15px; opacity: 0.85; }
-  main { max-width: 820px; margin: 40px auto 80px; padding: 0 24px; }
+  main { max-width: 1040px; margin: 40px auto 80px; padding: 0 24px; }
   .lead { background: var(--card); border: 1px solid var(--border); border-radius: 8px;
     padding: 20px 24px; margin-bottom: 30px; font-size: 15px; color: #2a2a2a; }
   .lead strong { color: var(--primary); }
-  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } header { padding: 30px 18px; } main { padding: 0 16px; } }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { header { padding: 30px 18px; } main { padding: 0 16px; } }
   .modcard { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--border);
     border-radius: 10px; padding: 26px 24px; text-decoration: none; color: inherit;
     transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
@@ -62,6 +63,14 @@
       <div class="modtitle">Jogalkotási és jogalkalmazási ismeretek</div>
       <div class="moddesc">Jogforrási rendszer, jogalkotási eljárás, jogszabályszerkesztés, valamint a közigazgatási hatósági eljárás (Ákr.): alapelvek, eljárás, döntések, jogorvoslatok, végrehajtás.</div>
       <div class="modmeta">74 kérdés · 15 / 10 / 5 pontos csoportok</div>
+      <div class="modbtn">Megnyitás →</div>
+    </a>
+
+    <a class="modcard" href="kerdessor_III_modul_2026.html">
+      <span class="modtag">III. MODUL</span>
+      <div class="modtitle">Általános államháztartási ismeretek</div>
+      <div class="moddesc">Nemzetgazdaság és államháztartás, gazdálkodási alapelvek, közbevételek és közkiadások, nemzeti vagyon, költségvetési ciklus, költségvetési szervek, valamint az államháztartás ellenőrzése (ÁSZ, KEHI, belső kontroll).</div>
+      <div class="modmeta">41 kérdés · 15 / 10 / 5 pontos csoportok</div>
       <div class="modbtn">Megnyitás →</div>
     </a>
   </div>
