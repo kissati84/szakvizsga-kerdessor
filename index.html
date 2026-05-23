@@ -35,6 +35,17 @@
     padding: 10px; border-radius: 6px; font-size: 14px; font-weight: 600; transition: background 0.15s; }
   .modcard:hover .modbtn { background: var(--primary-dark); }
   .footer { text-align: center; margin-top: 36px; font-size: 12.5px; color: var(--muted); }
+  .examcard { display:flex; flex-direction:column; background: var(--primary); color:#fff; border-radius:10px;
+    padding: 26px 28px; text-decoration:none; margin-bottom: 26px; transition: transform 0.15s, box-shadow 0.15s; }
+  .examcard:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+  .examcard .modtag { background: var(--accent); }
+  .examcard .extitle { margin: 14px 0 6px; font-size: 21px; font-weight: 700; color:#fff; }
+  .examcard .exdesc { font-size: 14px; color: rgba(255,255,255,0.85); }
+  .examcard .exmeta { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,0.75); }
+  .examcard .modbtn { background: var(--accent); margin-top: 16px; }
+  .examcard:hover .modbtn { background: #c89647; }
+  .subhead { font-size: 14px; font-weight:600; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.5px; margin: 4px 0 14px; }
 </style>
 </head>
 <body>
@@ -46,11 +57,13 @@
 
 <main>
   <div class="lead">
-    <strong>Válasszon modult.</strong> Mindkét kérdéssorban a kérdés alá írhatja a válaszát, majd az <em>„Ellenőrzés"</em> gombbal a hivatalos tananyag kulcsszavai alapján azonnali, tájékoztató jellegű értékelést és pontszámot kap, valamint megtekintheti a tananyag-alapú mintaválaszt. A válaszokat a böngésző a saját gépén tárolja.
+    <strong>Válasszon gyakorlási módot.</strong> A modulonkénti kérdéssorokban a kérdés alá írhatja a válaszát, majd az <em>„Ellenőrzés"</em> gombbal a hivatalos tananyag kulcsszavai alapján azonnali, tájékoztató jellegű értékelést és pontszámot kap, valamint megtekintheti a tananyag-alapú mintaválaszt. A <em>Próbateszt</em> mind az öt modulból kérdez, vizsgaszerű, 100 pontos összeállításban. A válaszokat a böngésző a saját gépén tárolja.
   </div>
 
+  <div class="subhead">Gyakorlás modulonként</div>
+
   <div class="cards">
-    <a class="modcard" href="kerdessor_I_modul_2026.html">
+    <a class="modcard" target="_blank" rel="noopener" href="kerdessor_I_modul_2026.html">
       <span class="modtag">I. MODUL</span>
       <div class="modtitle">A központi állami szervek rendszere</div>
       <div class="moddesc">Alkotmányfejlődés, alapvető jogok, Országgyűlés, köztársasági elnök, Kormány, Alkotmánybíróság, bíróság, ügyészség, helyi önkormányzatok és a közigazgatás szervezete.</div>
@@ -58,7 +71,7 @@
       <div class="modbtn">Megnyitás →</div>
     </a>
 
-    <a class="modcard" href="kerdessor_II_modul_2026.html">
+    <a class="modcard" target="_blank" rel="noopener" href="kerdessor_II_modul_2026.html">
       <span class="modtag">II. MODUL</span>
       <div class="modtitle">Jogalkotási és jogalkalmazási ismeretek</div>
       <div class="moddesc">Jogforrási rendszer, jogalkotási eljárás, jogszabályszerkesztés, valamint a közigazgatási hatósági eljárás (Ákr.): alapelvek, eljárás, döntések, jogorvoslatok, végrehajtás.</div>
@@ -66,7 +79,7 @@
       <div class="modbtn">Megnyitás →</div>
     </a>
 
-    <a class="modcard" href="kerdessor_III_modul_2026.html">
+    <a class="modcard" target="_blank" rel="noopener" href="kerdessor_III_modul_2026.html">
       <span class="modtag">III. MODUL</span>
       <div class="modtitle">Általános államháztartási ismeretek</div>
       <div class="moddesc">Nemzetgazdaság és államháztartás, gazdálkodási alapelvek, közbevételek és közkiadások, nemzeti vagyon, költségvetési ciklus, költségvetési szervek, valamint az államháztartás ellenőrzése (ÁSZ, KEHI, belső kontroll).</div>
@@ -74,7 +87,7 @@
       <div class="modbtn">Megnyitás →</div>
     </a>
 
-    <a class="modcard" href="kerdessor_IV_modul_2026.html">
+    <a class="modcard" target="_blank" rel="noopener" href="kerdessor_IV_modul_2026.html">
       <span class="modtag">IV. MODUL</span>
       <div class="modtitle">Közigazgatás-szervezési és vezetési ismeretek</div>
       <div class="moddesc">Vezetéstudományi iskolák, vezetési stílusok és funkciók, koordináció, szervezeti formák, változásvezetés, e-közigazgatás, projekt- és minőségmenedzsment, csoportos alkotótechnikák, valamint a közszolgálati HR és a Kit. szabályai.</div>
@@ -82,7 +95,7 @@
       <div class="modbtn">Megnyitás →</div>
     </a>
 
-    <a class="modcard" href="kerdessor_V_modul_2026.html">
+    <a class="modcard" target="_blank" rel="noopener" href="kerdessor_V_modul_2026.html">
       <span class="modtag">V. MODUL</span>
       <div class="modtitle">Az Európai Unió szervezete, működése és jogrendszere</div>
       <div class="moddesc">Az integráció mérföldkövei, az uniós jog forrásai és jellege, uniós polgárság és alapjogvédelem, az EU intézményrendszere és döntéshozatala, közpénzügyek, az EU hatáskörei és bel- és külpolitikái, valamint Magyarország az EU-ban.</div>
@@ -90,6 +103,16 @@
       <div class="modbtn">Megnyitás →</div>
     </a>
   </div>
+
+  <div class="subhead" style="margin-top:32px;">Vizsgaszimuláció</div>
+
+  <a class="examcard" href="probateszt_2026.html" target="_blank" rel="noopener">
+    <span class="modtag">PRÓBATESZT · 100 PONT</span>
+    <div class="extitle">Vegyes próbavizsga mind az öt modulból</div>
+    <div class="exdesc">Véletlenszerűen összeállított, vizsgaszerű kérdéssor: egy 15, hat 10 és öt 5 pontos kérdés (összesen 100 pont), lehetőleg minden modult érintve. A végén egyetlen gombbal kiértékel, megmutatja a 100-ból elért pontszámot, és bármikor új tesztet kérhet.</div>
+    <div class="exmeta">12 kérdés · 1×15 + 6×10 + 5×5 = 100 pont · újrakeverhető</div>
+    <div class="modbtn">Próbateszt indítása →</div>
+  </a>
 
   <div class="footer">A kérdéssorok a 2026. március 10-i hivatalos vizsgakérdések és a Nemzeti Közszolgálati Egyetem tananyaga alapján készültek. Az értékelés kulcsszó-egyezésen alapul, ezért tájékoztató jellegű.</div>
 </main>
